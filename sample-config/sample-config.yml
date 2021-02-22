@@ -1,0 +1,5 @@
+decision_logs:
+  plugin: persistent_decision_logger
+plugins:
+  persistent_decision_logger:
+    stderr: false 

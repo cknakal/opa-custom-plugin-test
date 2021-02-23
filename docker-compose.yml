@@ -1,0 +1,21 @@
+version: '2.1'
+services:
+  opa:
+    build:
+      context: sidecars/opa
+    ports:
+      - 9191
+    networks:
+      local:
+
+  # envoy proxy that responds directly to requests coming into test-service
+  test-service:
+    build:
+      context: sidecars/envoy
+    ports:
+      - 8080:8080
+    networks:
+      local:
+
+networks:
+  local:

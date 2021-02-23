@@ -21,9 +21,16 @@ COPY plugin.go .
 COPY go.mod .
 COPY go.sum .
 COPY sample-config sample-config
+RUN go mod download
 
 RUN GOARCH=amd64 CGO_ENABLED=0 GOOS=linux go build -o opa_envoy_linux_amd64 .
-RUN chmod +x opa_envoy_linux_amd64
+
+FROM gcr.io/distroless/base
+
+COPY --from=builder /app/opa_envoy_linux_amd64 /app/opa_envoy_linux_amd64
+COPY --from=builder /app/sample-config /app/sample-config
+
+WORKDIR /app
 
 ENTRYPOINT [ \
     "./opa_envoy_linux_amd64", \
